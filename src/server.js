@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const sequelize = require("./db");
 const models = require("./models/Models");
+const router = require("./routes/allRoutes");
 
 const port = process.env.SERVER_PORT;
 const app = express()
@@ -16,6 +17,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 app.use(express.json());
+app.use("/api", router);
 
 async function syncModels() {
     try {
