@@ -13,6 +13,7 @@ router.put("/:employee_id", upload.single('image'), EmployeeController.updateEmp
 
 router.delete("/:employee_id", EmployeeController.deleteEmployee);
 
+router.patch("/:employee_id", upload.single('image'), EmployeeController.updateImage);
 
 
 module.exports = router;

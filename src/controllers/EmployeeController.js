@@ -26,7 +26,7 @@ class EmployeeController {
                 email: employee.email,
                 address: employee.address,
                 imageUrl: employee.image_name ? `/employees/${employee.image_name}` : null
-              }));
+            }));
             return res.status(200).json(employeesWithUrls);
         } catch (error) {
             return res.status(500).json({ message: error.message });
@@ -49,7 +49,7 @@ class EmployeeController {
                 email: employee.email,
                 address: employee.address,
                 imageUrl: employee.image_name ? `/employees/${employee.image_name}` : null
-              };
+            };
             return res.status(200).json(employeeWithUrl);
         } catch (error) {
             return res.status(500).json({ message: error.message });
@@ -71,6 +71,19 @@ class EmployeeController {
         }
     }
 
+    async updateImage(req, res) {
+        const { employee_id } = req.params;
+        const image_name = req.file ? `${req.file.filename}` : null;
+        try {
+            const updatedEmployee = await EmployeeService.updateImage(employee_id, image_name);
+            if (!updatedEmployee) {
+                return res.status(404).json({ message: "Работник не найден" });
+            }
+            return res.status(200).json(updatedEmployee);
+        } catch (error) {
+            return res.status(500).json({ message: error.message });
+        }
+    }
     async deleteEmployee(req, res) {
         const { employee_id } = req.params;
         try {

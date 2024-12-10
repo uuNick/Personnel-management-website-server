@@ -42,7 +42,7 @@ class EmployeeService {
 
     deleteImage(file_name) {
         const imagePath = path.join(__dirname, '..', 'uploads', 'employees', file_name);
-        
+
         if (fs.existsSync(imagePath)) {
             fs.unlinkSync(imagePath);
             console.log(`Фотография ${imagePath} успешно удалена.`);
@@ -58,6 +58,23 @@ class EmployeeService {
         }
         this.deleteImage(employee.image_name);
         await employee.destroy();
+    }
+
+    async updateImage(employee_id, image_name) {
+        const employee = await Employee.findByPk(employee_id);
+        if (!employee) {
+            throw new Error("Работник с указанным ID не найден");
+        }
+
+        const updatedEmployee = await Employee.update(
+            {
+                image_name: image_name
+            },
+            {
+                where: { id: employee_id }
+            }
+        )
+        return updatedEmployee;
     }
 }
 
