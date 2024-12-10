@@ -15,6 +15,6 @@ router.use("/daysOff", DayOffRouter);
 router.use("/documents", DocumentRouter);
 router.use("/employees", EmployeeRouter);
 router.use("/sickLeaves", SickLeaveRouter);
-router.use("/Vacations", VacationRouter);
+router.use("/vacations", VacationRouter);
 
 module.exports = router;

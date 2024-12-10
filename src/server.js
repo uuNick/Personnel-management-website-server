@@ -1,6 +1,7 @@
 require("dotenv").config();
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 const sequelize = require("./db");
 const models = require("./models/Models");
 const router = require("./routes/allRoutes");
@@ -16,6 +17,7 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
+app.use(express.static('uploads'));
 app.use(express.json());
 app.use("/api", router);
 
@@ -42,7 +44,6 @@ const start = async () => {
         await sequelize.authenticate();
         await syncModels();
         //await seedDatabase();
-
         app.listen(port, () => console.log(`Server listening on port ${port}`));
     } catch (e) {
         console.log(e);
