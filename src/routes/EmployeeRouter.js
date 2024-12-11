@@ -5,6 +5,14 @@ const upload = require('../multerConfig');
 
 router.get("/", EmployeeController.getAllEmployees);
 
+router.get("/pag", EmployeeController.getAllEmployeesWithPag);
+
+router.get("/sorted", EmployeeController.getSortedEmployees);
+
+router.get("/search", EmployeeController.searchEmployees);
+
+router.get("/search_and_sort", EmployeeController.searchAndSortEmployees);
+
 router.get("/:employee_id", EmployeeController.getEmployeeById);
 
 router.post("/", upload.single('image'), EmployeeController.createEmployee);

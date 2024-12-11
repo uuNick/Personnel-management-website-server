@@ -1,6 +1,7 @@
 const Employee = require('../models/Employee');
 const fs = require('node:fs');
 const path = require('node:path');
+const { Op } = require('sequelize');
 
 class EmployeeService {
 
@@ -10,6 +11,49 @@ class EmployeeService {
 
     async getAllEmployees() {
         return await Employee.findAll();
+    }
+
+    async getAllEmployeesWithPag(limit, offset) {
+        return await Employee.findAndCountAll({
+            limit: limit,
+            offset: offset,
+        })
+    }
+
+    async getSortedEmployees(limit, offset, sortBy, order) {
+        return await Employee.findAndCountAll({
+            order: [[sortBy, order]],
+            offset: offset,
+            limit: limit,
+        });
+    }
+
+    async searchEmployees(limit, offset, search) {
+        return await Employee.findAndCountAll({
+            where: {
+                [Op.or]: [
+                    { fullname: { [Op.like]: `%${search}%` } },
+                    { position: { [Op.like]: `%${search}%` } },
+                ],
+            },
+            order: [[sortBy, order]],
+            offset: offset,
+            limit: limit,
+        })
+    }
+
+    async searchAndSortEmployees(limit, offset, search, sortBy, order){
+        return await Employee.findAndCountAll({
+            where: {
+                [Op.or]: [
+                    { fullname: { [Op.like]: `%${search}%` } },
+                    { position: { [Op.like]: `%${search}%` } },
+                ],
+            },
+            order: [[sortBy, order]],
+            offset: offset,
+            limit: limit,
+        })
     }
 
     async getEmployeeById(employee_id) {

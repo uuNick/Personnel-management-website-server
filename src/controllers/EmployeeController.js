@@ -18,6 +18,7 @@ class EmployeeController {
         try {
             const employees = await EmployeeService.getAllEmployees();
             const employeesWithUrls = employees.map(employee => ({
+                id: employee.id,
                 fullname: employee.fullname,
                 birth_date: employee.birth_date,
                 position: employee.position,
@@ -30,6 +31,132 @@ class EmployeeController {
             return res.status(200).json(employeesWithUrls);
         } catch (error) {
             return res.status(500).json({ message: error.message });
+        }
+    }
+
+    async getAllEmployeesWithPag(req, res) {
+
+        const { page = 1, limit = 10 } = req.query;
+        const offset = (page - 1) * limit;
+
+        try {
+            const employees = await EmployeeService.getAllEmployeesWithPag(limit, offset);
+            const employeesWithUrls = employees.rows.map(employee => ({
+                id: employee.id,
+                fullname: employee.fullname,
+                birth_date: employee.birth_date,
+                position: employee.position,
+                start_date: employee.start_date,
+                phone_number: employee.phone_number,
+                email: employee.email,
+                address: employee.address,
+                imageUrl: employee.image_name ? `/employees/${employee.image_name}` : null
+            }));
+
+            return res.status(200).json({
+                total: employees.count,
+                pages: Math.ceil(employees.count / limit),
+                data: employeesWithUrls,
+            });
+
+        } catch (error) {
+            return res.status(500).json({ message: `Ошибка при получении работников: ${error.message}`, });
+        }
+    }
+
+    async getSortedEmployees(req, res) {
+        const {
+            sortBy = "fullname", order = "ASC",
+            page = 1, limit = 10
+        } = req.query;
+        const offset = (page - 1) * limit;
+
+        try {
+            const sortedEmployees = await EmployeeService.getSortedEmployees(limit, offset, sortBy, order);
+            const sortedEmployeesWithUrls = sortedEmployees.rows.map(employee => ({
+                id: employee.id,
+                fullname: employee.fullname,
+                birth_date: employee.birth_date,
+                position: employee.position,
+                start_date: employee.start_date,
+                phone_number: employee.phone_number,
+                email: employee.email,
+                address: employee.address,
+                imageUrl: employee.image_name ? `/employees/${employee.image_name}` : null
+            }));
+
+            return res.status(200).json({
+                total: sortedEmployees.count,
+                pages: Math.ceil(sortedEmployees.count / limit),
+                data: sortedEmployeesWithUrls,
+            });
+
+        } catch (error) {
+            return res.status(500).json({ message: `Ошибка при получении работников: ${error.message}`, });
+        }
+    }
+
+    async searchEmployees(req, res) {
+        const { search, page = 1, limit = 10 } = req.query;
+        const offset = (page - 1) * limit;
+
+        try {
+            const employees = await EmployeeService.searchEmployees(limit, offset, search);
+
+            const employeesWithUrls = employees.rows.map(employee => ({
+                id: employee.id,
+                fullname: employee.fullname,
+                birth_date: employee.birth_date,
+                position: employee.position,
+                start_date: employee.start_date,
+                phone_number: employee.phone_number,
+                email: employee.email,
+                address: employee.address,
+                imageUrl: employee.image_name ? `/employees/${employee.image_name}` : null
+            }));
+
+            return res.status(200).json({
+                total: employees.count,
+                pages: Math.ceil(employees.count / limit),
+                data: employeesWithUrls,
+            });
+        } catch (error) {
+            console.error("Ошибка при поиске сотрудников:", error);
+            return res
+                .status(500)
+                .json({ message: `Ошибка при поиске сотрудников: ${error}` });
+        }
+    }
+
+    async searchAndSortEmployees(req, res) {
+        const { search, sortBy = "fullname", order = "ASC", page = 1, limit = 10 } = req.query;
+        const offset = (page - 1) * limit;
+
+        try {
+            const employees = await EmployeeService.searchAndSortEmployees(limit, offset, search, sortBy, order);
+
+            const employeesWithUrls = employees.rows.map(employee => ({
+                id: employee.id,
+                fullname: employee.fullname,
+                birth_date: employee.birth_date,
+                position: employee.position,
+                start_date: employee.start_date,
+                phone_number: employee.phone_number,
+                email: employee.email,
+                address: employee.address,
+                imageUrl: employee.image_name ? `/employees/${employee.image_name}` : null
+            }));
+
+            return res.status(200).json({
+                total: employees.count,
+                pages: Math.ceil(employees.count / limit),
+                data: employeesWithUrls,
+            });
+        } catch (error) {
+            console.error("Ошибка при поиске сотрудников:", error);
+            return res
+                .status(500)
+                .json({ message: `Ошибка при поиске сотрудников: ${error}` });
         }
     }
 
