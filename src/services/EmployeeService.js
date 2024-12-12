@@ -12,7 +12,11 @@ class EmployeeService {
     async getAllEmployees() {
         return await Employee.findAll();
     }
-
+    
+    async getEmployeeById(employee_id) {
+        return await Employee.findByPk(employee_id);
+    }
+    
     async getAllEmployeesWithPag(limit, offset) {
         return await Employee.findAndCountAll({
             limit: limit,
@@ -55,9 +59,6 @@ class EmployeeService {
         })
     }
 
-    async getEmployeeById(employee_id) {
-        return await Employee.findByPk(employee_id);
-    }
 
     async updateEmployee(employee_id, data) {
         const employee = await Employee.findByPk(employee_id);

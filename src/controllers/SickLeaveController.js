@@ -35,6 +35,82 @@ class SickLeaveController {
         }
     }
 
+    async getAllSickLeavesWithPag(req, res) {
+        const { page = 1, limit = 10 } = req.query;
+        const offset = (page - 1) * limit;
+
+        try {
+            const sickLeaves = await SickLeaveService.getAllSickLeavesWithPag(limit, offset);
+
+            return res.status(200).json({
+                total: sickLeaves.count,
+                pages: Math.ceil(sickLeaves.count / limit),
+                data: sickLeaves,
+            });
+
+        } catch (error) {
+            return res.status(500).json({ message: `Ошибка при получении больничных листов: ${error.message}`, });
+        }
+    }
+
+    async getSortedSickLeaves(req, res) {
+        const {
+            sortBy = "start_date", order = "ASC",
+            page = 1, limit = 10
+        } = req.query;
+        const offset = (page - 1) * limit;
+
+        try {
+            const sortedSickLeaves = await SickLeaveService.getSortedSickLeaves(limit, offset, sortBy, order);
+            return res.status(200).json({
+                total: sortedSickLeaves.count,
+                pages: Math.ceil(sortedSickLeaves.count / limit),
+                data: sortedSickLeaves,
+            });
+
+        } catch (error) {
+            return res.status(500).json({ message: `Ошибка при получении больничных листов: ${error.message}`, });
+        }
+    }
+
+    async searchSickLeavesByEmployeeId(req, res) {
+        const { employee_id, page = 1, limit = 10 } = req.query;
+        const offset = (page - 1) * limit;
+
+        try {
+            const sickLeaves = await SickLeaveService.searchSickLeavesByEmployeeId(limit, offset, employee_id);
+            return res.status(200).json({
+                total: sickLeaves.count,
+                pages: Math.ceil(sickLeaves.count / limit),
+                data: sickLeaves,
+            });
+        } catch (error) {
+            console.error("Ошибка при поиске больничных листов:", error);
+            return res
+                .status(500)
+                .json({ message: `Ошибка при поиске больничных листов: ${error}` });
+        }
+    }
+
+    async searchSickLeavesByDates(req, res) {
+        const { start_date, end_date, page = 1, limit = 10 } = req.query;
+        const offset = (page - 1) * limit;
+
+        try {
+            const sickLeaves = await SickLeaveService.searchSickLeavesByDates(limit, offset, start_date, end_date);
+            return res.status(200).json({
+                total: sickLeaves.count,
+                pages: Math.ceil(sickLeaves.count / limit),
+                data: sickLeaves,
+            });
+        } catch (error) {
+            console.error("Ошибка при поиске больничных листов:", error);
+            return res
+                .status(500)
+                .json({ message: `Ошибка при поиске больничных листов: ${error}` });
+        }
+    }
+
     async updateSickLeave(req, res) {
         const { sick_leave_id } = req.params;
         const { data } = req.body;

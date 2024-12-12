@@ -4,6 +4,14 @@ const SickLeaveController = require("../controllers/SickLeaveController");
 
 router.get("/", SickLeaveController.getAllSickLeaves);
 
+router.get("/pag", SickLeaveController.getAllSickLeavesWithPag);
+
+router.get("/sorted", SickLeaveController.getSortedSickLeaves);
+
+router.get("/search_by_dates", SickLeaveController.searchSickLeavesByDates);
+
+router.get("/search_by_emp_id", SickLeaveController.searchSickLeavesByEmployeeId);
+
 router.get("/:sick_leave_id", SickLeaveController.getSickLeaveById);
 
 router.post("/", SickLeaveController.createSickLeave);

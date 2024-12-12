@@ -1,4 +1,5 @@
 const SickLeave = require('../models/SickLeave');
+const { Op } = require('sequelize');
 
 class SickLeaveService {
 
@@ -13,6 +14,49 @@ class SickLeaveService {
     async getSickLeaveById(sick_leave_id) {
         return await SickLeave.findByPk(sick_leave_id);
     }
+
+    async getAllSickLeavesWithPag(limit, offset) {
+        return await SickLeave.findAndCountAll({
+            limit: limit,
+            offset: offset,
+        })
+    }
+
+    async getSortedSickLeaves(limit, offset, sortBy, order) {
+        return await SickLeave.findAndCountAll({
+            order: [[sortBy, order]],
+            offset: offset,
+            limit: limit,
+        });
+    }
+
+    async searchSickLeavesByEmployeeId(limit, offset, employee_id) {
+        return await SickLeave.findAndCountAll({
+            where: {
+                employee_id: {
+                    [Op.eq]: employee_id
+                }
+            },
+            offset: offset,
+            limit: limit,
+        });
+    }
+
+    async searchSickLeavesByDates(limit, offset, start_date, end_date) {
+        return await SickLeave.findAndCountAll({
+            where: {
+                start_date: {
+                    [Op.between]: [start_date, end_date]
+                },
+                end_date: { //учитывем случаи, когда больничный лист может начаться до start_date, но закончиться после start_date и до end_date.
+                    [Op.between]: [start_date, end_date]
+                }
+            },
+            offset: offset,
+            limit: limit,
+        })
+    }
+
 
     async updateSickLeave(sick_leave_id, data) {
         const sickLeave = await SickLeave.findByPk(sick_leave_id);
