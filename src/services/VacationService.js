@@ -1,4 +1,5 @@
 const Vacation = require('../models/Vacation');
+const { Op } = require('sequelize');
 
 class VacationService {
 
@@ -13,6 +14,49 @@ class VacationService {
     async getVacationById(vacation_id) {
         return await Vacation.findByPk(vacation_id);
     }
+
+    async getAllVacationsWithPag(limit, offset) {
+        return await Vacation.findAndCountAll({
+            limit: limit,
+            offset: offset,
+        })
+    }
+
+    async getSortedVacations(limit, offset, sortBy, order) {
+        return await Vacation.findAndCountAll({
+            order: [[sortBy, order]],
+            offset: offset,
+            limit: limit,
+        });
+    }
+
+    async searchVacationsByEmployeeId(limit, offset, employee_id) {
+        return await Vacation.findAndCountAll({
+            where: {
+                employee_id: {
+                    [Op.eq]: employee_id
+                }
+            },
+            offset: offset,
+            limit: limit,
+        });
+    }
+
+    async searchVacationsByDates(limit, offset, start_date, end_date) {
+        return await SickLeave.findAndCountAll({
+            where: {
+                start_date: {
+                    [Op.between]: [start_date, end_date]
+                },
+                end_date: { //учитывем случаи, когда больничный лист может начаться до start_date, но закончиться после start_date и до end_date.
+                    [Op.between]: [start_date, end_date]
+                }
+            },
+            offset: offset,
+            limit: limit,
+        })
+    }
+
 
     async updateVacation(vacation_id, data) {
         const vacation = await Vacation.findByPk(vacation_id);

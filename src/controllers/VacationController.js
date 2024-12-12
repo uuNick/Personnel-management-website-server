@@ -35,6 +35,83 @@ class VacationController {
         }
     }
 
+    async getAllVacationsWithPag(req, res) {
+        const { page = 1, limit = 10 } = req.query;
+        const offset = (page - 1) * limit;
+
+        try {
+            const vacations = await VacationService.getAllVacationsWithPag(limit, offset);
+
+            return res.status(200).json({
+                total: vacations.count,
+                pages: Math.ceil(vacations.count / limit),
+                data: vacations,
+            });
+
+        } catch (error) {
+            return res.status(500).json({ message: `Ошибка при получении отпусков: ${error.message}`, });
+        }
+    }
+
+    async getSortedVacations(req, res) {
+        const {
+            sortBy = "start_date", order = "ASC",
+            page = 1, limit = 10
+        } = req.query;
+        const offset = (page - 1) * limit;
+
+        try {
+            const sortedVacations = await VacationService.getSortedVacations(limit, offset, sortBy, order);
+            return res.status(200).json({
+                total: sortedVacations.count,
+                pages: Math.ceil(sortedVacations.count / limit),
+                data: sortedVacations,
+            });
+
+        } catch (error) {
+            return res.status(500).json({ message: `Ошибка при получении отпусков: ${error.message}`, });
+        }
+    }
+
+    async searchVacationsByEmployeeId(req, res) {
+        const { employee_id, page = 1, limit = 10 } = req.query;
+        const offset = (page - 1) * limit;
+
+        try {
+            const vacations = await VacationService.searchVacationsByEmployeeId(limit, offset, employee_id);
+            return res.status(200).json({
+                total: vacations.count,
+                pages: Math.ceil(vacations.count / limit),
+                data: vacations,
+            });
+        } catch (error) {
+            console.error("Ошибка при поиске отпусков:", error);
+            return res
+                .status(500)
+                .json({ message: `Ошибка при поиске отпусков: ${error}` });
+        }
+    }
+
+    async searchVacationsByDates(req, res) {
+        const { start_date, end_date, page = 1, limit = 10 } = req.query;
+        const offset = (page - 1) * limit;
+
+        try {
+            const vacations = await VacationService.searchVacationsByDates(limit, offset, start_date, end_date);
+            return res.status(200).json({
+                total: vacations.count,
+                pages: Math.ceil(vacations.count / limit),
+                data: vacations,
+            });
+        } catch (error) {
+            console.error("Ошибка при поиске отпусков:", error);
+            return res
+                .status(500)
+                .json({ message: `Ошибка при поиске отпусков: ${error}` });
+        }
+    }
+
+
     async updateVacation(req, res) {
         const { vacation_id } = req.params;
         const { data } = req.body;
