@@ -17,7 +17,7 @@ router.get("/:employee_id", EmployeeController.getEmployeeById);
 
 router.post("/", upload.single('image'), EmployeeController.createEmployee);
 
-router.put("/:employee_id", upload.single('image'), EmployeeController.updateEmployee);
+router.put("/:employee_id", EmployeeController.updateEmployee);
 
 router.delete("/:employee_id", EmployeeController.deleteEmployee);
 

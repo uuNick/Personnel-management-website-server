@@ -185,10 +185,10 @@ class EmployeeController {
 
     async updateEmployee(req, res) {
         const { employee_id } = req.params;
-        const { data } = req.body;
-        const image_name = req.file ? `${req.file.filename}` : null;
+        const { fullname, birth_date, position, start_date, phone_number, email, address } = req.body;
+        //const image_name = req.file ? `${req.file.filename}` : null;
         try {
-            const updatedEmployee = await EmployeeService.updateEmployee(employee_id, data, image_name);
+            const updatedEmployee = await EmployeeService.updateEmployee(employee_id, {fullname, birth_date, position, start_date, phone_number, email, address});
             if (!updatedEmployee) {
                 return res.status(404).json({ message: "Работник не найден" });
             }

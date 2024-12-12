@@ -36,7 +36,6 @@ class EmployeeService {
                     { position: { [Op.like]: `%${search}%` } },
                 ],
             },
-            order: [[sortBy, order]],
             offset: offset,
             limit: limit,
         })
@@ -60,7 +59,7 @@ class EmployeeService {
         return await Employee.findByPk(employee_id);
     }
 
-    async updateEmployee(employee_id, data, image_name) {
+    async updateEmployee(employee_id, data) {
         const employee = await Employee.findByPk(employee_id);
         if (!employee) {
             throw new Error("Работник с указанным ID не найден");
@@ -68,14 +67,13 @@ class EmployeeService {
 
         const updatedEmployee = await Employee.update(
             {
-                full_name: data.full_name,
+                fullname: data.fullname,
                 birth_date: data.birth_date,
                 position: data.position,
                 start_date: data.start_date,
                 phone_number: data.phone_number,
                 email: data.email,
                 address: data.address,
-                image_name: image_name
             },
             {
                 where: { id: employee_id }
