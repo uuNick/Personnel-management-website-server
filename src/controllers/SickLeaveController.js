@@ -45,7 +45,7 @@ class SickLeaveController {
             return res.status(200).json({
                 total: sickLeaves.count,
                 pages: Math.ceil(sickLeaves.count / limit),
-                data: sickLeaves,
+                data: sickLeaves.rows,
             });
 
         } catch (error) {
@@ -65,7 +65,7 @@ class SickLeaveController {
             return res.status(200).json({
                 total: sortedSickLeaves.count,
                 pages: Math.ceil(sortedSickLeaves.count / limit),
-                data: sortedSickLeaves,
+                data: sortedSickLeaves.rows,
             });
 
         } catch (error) {
@@ -82,7 +82,7 @@ class SickLeaveController {
             return res.status(200).json({
                 total: sickLeaves.count,
                 pages: Math.ceil(sickLeaves.count / limit),
-                data: sickLeaves,
+                data: sickLeaves.rows,
             });
         } catch (error) {
             console.error("Ошибка при поиске больничных листов:", error);
@@ -101,7 +101,7 @@ class SickLeaveController {
             return res.status(200).json({
                 total: sickLeaves.count,
                 pages: Math.ceil(sickLeaves.count / limit),
-                data: sickLeaves,
+                data: sickLeaves.rows,
             });
         } catch (error) {
             console.error("Ошибка при поиске больничных листов:", error);

@@ -5,7 +5,7 @@ const path = require('path');
 const sequelize = require("./db");
 const models = require("./models/Models");
 const router = require("./routes/allRoutes");
-const { EmployeeSeed, DocumentSeed } = require("./seed");
+const { EmployeeSeed, DocumentSeed, SickLeaveSeed, VacationSeed } = require("./seed");
 
 const port = process.env.SERVER_PORT;
 const app = express()
@@ -26,6 +26,8 @@ async function seedDatabase() {
     try {
         await new EmployeeSeed().seed();
         await new DocumentSeed().seed();
+        await new SickLeaveSeed().seed();
+        await new VacationSeed().seed();
         console.log('Все таблицы успешно заполнены!');
     } catch (error) {
         console.error('Ошибка при заполнении базы данных:', error);

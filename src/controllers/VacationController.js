@@ -45,7 +45,7 @@ class VacationController {
             return res.status(200).json({
                 total: vacations.count,
                 pages: Math.ceil(vacations.count / limit),
-                data: vacations,
+                data: vacations.rows,
             });
 
         } catch (error) {
@@ -65,7 +65,7 @@ class VacationController {
             return res.status(200).json({
                 total: sortedVacations.count,
                 pages: Math.ceil(sortedVacations.count / limit),
-                data: sortedVacations,
+                data: sortedVacations.rows,
             });
 
         } catch (error) {
@@ -82,7 +82,7 @@ class VacationController {
             return res.status(200).json({
                 total: vacations.count,
                 pages: Math.ceil(vacations.count / limit),
-                data: vacations,
+                data: vacations.rows,
             });
         } catch (error) {
             console.error("Ошибка при поиске отпусков:", error);
@@ -101,7 +101,7 @@ class VacationController {
             return res.status(200).json({
                 total: vacations.count,
                 pages: Math.ceil(vacations.count / limit),
-                data: vacations,
+                data: vacations.rows,
             });
         } catch (error) {
             console.error("Ошибка при поиске отпусков:", error);

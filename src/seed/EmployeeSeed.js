@@ -11,7 +11,7 @@ class EmployeeSeed {
                 start_date: '2020-01-15',
                 phone_number: '+79123456789',
                 email: 'testmail1@gmail.com',
-                address: 'address 1',
+                address: 'бульвар Днепровский, 7',
                 image_name: 'image-1733855795131-117985861.png'
             },
             {
@@ -21,7 +21,7 @@ class EmployeeSeed {
                 start_date: '2023-04-10',
                 phone_number: '+37564920382332',
                 email: 'testmail2@gmail.com',
-                address: 'address 2',
+                address: 'ул. Королёва, 8',
                 image_name: 'image-1733855861654-863334404.png'
             },
             {
@@ -31,7 +31,7 @@ class EmployeeSeed {
                 start_date: '2018-07-20',
                 phone_number: '+79991112233',
                 email: 'testmail3@gmail.com',
-                address: 'address 3efcrr',
+                address: 'тестовый адрес 3',
                 image_name: 'image-1733855868988-753926040.png'
             },
             {
@@ -41,7 +41,7 @@ class EmployeeSeed {
                 start_date: '2022-05-05',
                 phone_number: '+79001234567',
                 email: 'testmail4@gmail.com',
-                address: 'address 4',
+                address: 'проспект Шмидта, 17',
                 image_name: 'image-1733855876392-299079694.png'
             },
             {
@@ -51,7 +51,7 @@ class EmployeeSeed {
                 start_date: '2015-12-10',
                 phone_number: '+78005556677',
                 email: 'testmail5@gmail.com',
-                address: 'address 5',
+                address: 'ул. Ленинская, 18',
                 image_name: 'image-1733855883084-95430802.png'
             },
             {
@@ -61,7 +61,7 @@ class EmployeeSeed {
                 start_date: '2021-02-22',
                 phone_number: '+79219876543',
                 email: 'testmail6@gmail.com',
-                address: 'address 6',
+                address: 'ул. Макарова, 23',
                 image_name: 'image-1733855890573-637773391.png'
             },
             {
