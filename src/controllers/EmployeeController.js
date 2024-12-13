@@ -33,12 +33,35 @@ class EmployeeController {
             return res.status(500).json({ message: error.message });
         }
     }
-
+    
+    async getEmployeeById(req, res) {
+        const { employee_id } = req.params;
+        try {
+            const employee = await EmployeeService.getEmployeeById(employee_id);
+            if (!employee) {
+                return res.status(404).json({ message: "Работник не найден" });
+            }
+            const employeeWithUrl = {
+                fullname: employee.fullname,
+                birth_date: employee.birth_date,
+                position: employee.position,
+                start_date: employee.start_date,
+                phone_number: employee.phone_number,
+                email: employee.email,
+                address: employee.address,
+                imageUrl: employee.image_name ? `/employees/${employee.image_name}` : null
+            };
+            return res.status(200).json(employeeWithUrl);
+        } catch (error) {
+            return res.status(500).json({ message: error.message });
+        }
+    }
+    
     async getAllEmployeesWithPag(req, res) {
-
+        
         const { page = 1, limit = 10 } = req.query;
         const offset = (page - 1) * limit;
-
+        
         try {
             const employees = await EmployeeService.getAllEmployeesWithPag(limit, offset);
             const employeesWithUrls = employees.rows.map(employee => ({
@@ -160,28 +183,6 @@ class EmployeeController {
         }
     }
 
-    async getEmployeeById(req, res) {
-        const { employee_id } = req.params;
-        try {
-            const employee = await EmployeeService.getEmployeeById(employee_id);
-            if (!employee) {
-                return res.status(404).json({ message: "Работник не найден" });
-            }
-            const employeeWithUrl = {
-                fullname: employee.fullname,
-                birth_date: employee.birth_date,
-                position: employee.position,
-                start_date: employee.start_date,
-                phone_number: employee.phone_number,
-                email: employee.email,
-                address: employee.address,
-                imageUrl: employee.image_name ? `/employees/${employee.image_name}` : null
-            };
-            return res.status(200).json(employeeWithUrl);
-        } catch (error) {
-            return res.status(500).json({ message: error.message });
-        }
-    }
 
     async updateEmployee(req, res) {
         const { employee_id } = req.params;

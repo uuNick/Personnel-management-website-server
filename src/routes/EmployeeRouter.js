@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const EmployeeController = require("../controllers/EmployeeController");
-const upload = require('../multerConfig');
+const upload = require('../multerConfigForEmployees');
 
 router.get("/", EmployeeController.getAllEmployees);
 
