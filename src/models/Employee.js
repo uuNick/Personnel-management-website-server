@@ -39,6 +39,8 @@ const Employee = sequelize.define('Employee', {
         type: DataTypes.STRING(50),
         allowNull: true,
     }
+}, {
+    timestamps: false,
 });
 
 

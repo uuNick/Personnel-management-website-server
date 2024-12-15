@@ -28,6 +28,8 @@ const DayOff = sequelize.define('DayOff', {
         type: DataTypes.TEXT,
         allowNull: true
     }
+}, {
+    timestamps: false,
 });
 
 

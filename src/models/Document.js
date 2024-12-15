@@ -32,6 +32,8 @@ const Document = sequelize.define('Document', {
         type: DataTypes.TEXT,
         allowNull: true,
     }
+}, {
+    timestamps: false,
 });
 
 

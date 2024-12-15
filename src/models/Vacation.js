@@ -37,6 +37,8 @@ const Vacation = sequelize.define('Vacation', {
         type: DataTypes.STRING(50),
         allowNull: false
     }
+}, {
+    timestamps: false,
 });
 
 

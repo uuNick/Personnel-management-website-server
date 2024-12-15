@@ -37,6 +37,8 @@ const SickLeave = sequelize.define('SickLeave', {
         type: DataTypes.TEXT,
         allowNull: true
     }
+}, {
+    timestamps: false,
 });
 
 
