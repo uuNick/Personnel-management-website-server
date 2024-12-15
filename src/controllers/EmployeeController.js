@@ -42,6 +42,7 @@ class EmployeeController {
                 return res.status(404).json({ message: "Работник не найден" });
             }
             const employeeWithUrl = {
+                id: employee.id,
                 fullname: employee.fullname,
                 birth_date: employee.birth_date,
                 position: employee.position,

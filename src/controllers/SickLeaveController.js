@@ -111,6 +111,25 @@ class SickLeaveController {
         }
     }
 
+    async searchByDateAndSortSickLeaves(req, res) {
+        const { start_date, end_date, sortBy = 'document_id', order = "ASC", page = 1, limit = 10 } = req.query;
+        const offset = (page - 1) * limit;
+
+        try {
+            const sickLeaves = await SickLeaveService.searchByDateAndSortSickLeaves(limit, offset, start_date, end_date, sortBy, order);
+            return res.status(200).json({
+                total: sickLeaves.count,
+                pages: Math.ceil(sickLeaves.count / limit),
+                data: sickLeaves.rows,
+            });
+        } catch (error) {
+            console.error("Ошибка при поиске и сортировке больничных листов:", error);
+            return res
+                .status(500)
+                .json({ message: `Ошибка при поиске и сортировке больничных листов: ${error}` });
+        }
+    }
+
     async updateSickLeave(req, res) {
         const { sick_leave_id } = req.params;
         const { data } = req.body;

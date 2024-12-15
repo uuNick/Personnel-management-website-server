@@ -57,6 +57,22 @@ class SickLeaveService {
         })
     }
 
+    async searchByDateAndSortSickLeaves(limit, offset, start_date, end_date, sortBy, order) {
+        return await SickLeave.findAndCountAll({
+            where: {
+                start_date: {
+                    [Op.between]: [start_date, end_date]
+                },
+                end_date: { //учитывем случаи, когда больничный лист может начаться до start_date, но закончиться после start_date и до end_date.
+                    [Op.between]: [start_date, end_date]
+                }
+            },
+            order: [[sortBy, order]],
+            offset: offset,
+            limit: limit,
+        })
+    }
+
 
     async updateSickLeave(sick_leave_id, data) {
         const sickLeave = await SickLeave.findByPk(sick_leave_id);

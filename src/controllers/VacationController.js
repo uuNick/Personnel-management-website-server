@@ -111,6 +111,25 @@ class VacationController {
         }
     }
 
+    async searchByDateAndSortVacations(req, res) {
+        const { start_date, end_date, sortBy = 'document_id', order = "ASC", page = 1, limit = 10 } = req.query;
+        const offset = (page - 1) * limit;
+
+        try {
+            const vacations = await VacationService.searchByDateAndSortVacations(limit, offset, start_date, end_date, sortBy, order);
+            return res.status(200).json({
+                total: vacations.count,
+                pages: Math.ceil(vacations.count / limit),
+                data: vacations.rows,
+            });
+        } catch (error) {
+            console.error("Ошибка при поиске и сортировке отпусков:", error);
+            return res
+                .status(500)
+                .json({ message: `Ошибка при поиске и сортировке отпусков: ${error}` });
+        }
+    }
+
 
     async updateVacation(req, res) {
         const { vacation_id } = req.params;
