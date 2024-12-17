@@ -95,7 +95,6 @@ class VacationController {
     async searchVacationsByDates(req, res) {
         const { start_date, end_date, page = 1, limit = 10 } = req.query;
         const offset = (page - 1) * limit;
-
         try {
             const vacations = await VacationService.searchVacationsByDates(limit, offset, start_date, end_date);
             return res.status(200).json({

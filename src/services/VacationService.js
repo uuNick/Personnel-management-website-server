@@ -43,7 +43,7 @@ class VacationService {
     }
 
     async searchVacationsByDates(limit, offset, start_date, end_date) {
-        return await SickLeave.findAndCountAll({
+        return await Vacation.findAndCountAll({
             where: {
                 start_date: {
                     [Op.between]: [start_date, end_date]
