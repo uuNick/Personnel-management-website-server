@@ -1,5 +1,4 @@
-const xlsx = require('xlsx');
-const Style = require('xlsx-style');
+const ExcelJS = require('exceljs');
 
 class ExcelService {
     constructor() {
@@ -14,11 +13,39 @@ class ExcelService {
             type: 'Тип отпуска'
         };
     }
-    async generateExcelReport(data) {
 
+    async generateExcelReport(data) {
+        const workbook = new ExcelJS.Workbook();
+        const worksheet = workbook.addWorksheet('Report');
+
+        // Получаем уникальные ключи и заголовки
         const uniqueKeys = [...new Set(data.flatMap(item => Object.keys(item)))];
         const columnHeaders = uniqueKeys.map(key => this.columnMapping[key] || key);
-        const worksheetData = [columnHeaders];
+        const headerRow = worksheet.addRow(columnHeaders);
+
+        //Устанавливаем стиль для заголовков
+        headerRow.eachCell((cell) => {
+            cell.font = { bold: true };
+            cell.fill = {
+                type: 'pattern',
+                pattern: 'solid',
+                fgColor: { argb: 'ffb4c6e7' },
+            };
+            cell.border = {
+                top: {
+                    style: 'thin'
+                },
+                left: {
+                    style: 'thin'
+                },
+                bottom: {
+                    style: 'thin'
+                },
+                right: {
+                    style: 'thin'
+                }
+            };
+        });
 
         data.forEach(item => {
             const rowData = columnHeaders.map(header => {
@@ -26,26 +53,43 @@ class ExcelService {
                 const value = item[key] || '';
                 return value;
             });
-            worksheetData.push(rowData);
+            const row = worksheet.addRow(rowData);
+            row.eachCell(function (cell) {
+                cell.border = {
+                    top: {
+                        style: 'thin'
+                    },
+                    left: {
+                        style: 'thin'
+                    },
+                    bottom: {
+                        style: 'thin'
+                    },
+                    right: {
+                        style: 'thin'
+                    }
+                };
+            })
         });
 
-        const ws = xlsx.utils.aoa_to_sheet(worksheetData);
-
+        // Центрирование содержимого ячеек
+        worksheet.eachRow((row) => {
+            row.eachCell((cell) => {
+                cell.alignment = { horizontal: 'center', vertical: 'middle' };
+            });
+        });
 
         // Автоматическое определение ширины колонок
-        const colWidths = ws['!cols'] || [];
-        for (let i = 0; i < worksheetData[0].length; i++) {
-            let maxWidth = worksheetData[0][i].length; // Ширина заголовка
-            for (let j = 1; j < worksheetData.length; j++) {
-                maxWidth = Math.max(maxWidth, worksheetData[j][i].toString().length);
-            }
-            colWidths[i] = { wch: maxWidth + 2 }; // Добавляем 2 для отступов
-        }
-        ws['!cols'] = colWidths;
+        worksheet.columns.forEach(column => {
+            let maxWidth = 0;
+            column.eachCell({ includeEmpty: true }, (cell) => {
+                maxWidth = Math.max(maxWidth, cell.value ? cell.value.toString().length : 0);
+            });
+            column.width = maxWidth + 2; // Добавляем немного отступа
+        });
 
-        const wb = xlsx.utils.book_new();
-        xlsx.utils.book_append_sheet(wb, ws, 'Report');
-        const buffer = xlsx.write(wb, { type: 'buffer' });
+        // Генерация буфера для возврата
+        const buffer = await workbook.xlsx.writeBuffer();
         return buffer;
     }
 }

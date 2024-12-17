@@ -10,6 +10,7 @@ const SickLeaveRouter = require("./SickLeaveRouter");
 const VacationRouter = require("./VacationRouter");
 const ExcelRouter = require('./ExcelRouter');
 const WordRouter = require('./WordRouter');
+const PDFRouter = require('./PDFRouter');
 
 //router.use("/auth", AuthRouter);
 router.use("/dataChanges", DataChangeRouter);
@@ -20,5 +21,5 @@ router.use("/sickLeaves", SickLeaveRouter);
 router.use("/vacations", VacationRouter);
 router.use("/excel", ExcelRouter);
 router.use("/word", WordRouter);
-
+router.use("/pdf", PDFRouter);
 module.exports = router;

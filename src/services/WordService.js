@@ -4,7 +4,6 @@ const getColumnTitles = (data) => {
     if (data.length === 0) return [];
 
     const lastItem = data[data.length - 1];
-    console.log(data);
     if ('diagnosis' in lastItem) {
         return ['ФИО', 'ID Документа', 'Начало', 'Конец', 'Диагноз'];
     } else if ('type' in lastItem) {
