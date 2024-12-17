@@ -5,13 +5,13 @@ const path = require('path');
 const sequelize = require("./db");
 const models = require("./models/Models");
 const router = require("./routes/allRoutes");
-const { EmployeeSeed, DocumentSeed, SickLeaveSeed, VacationSeed, DayOffSeed } = require("./seed");
+const { EmployeeSeed, DocumentSeed, SickLeaveSeed, VacationSeed, DayOffSeed, UserSeed, RoleSeed, UserRoleSeed } = require("./seed");
 
 const port = process.env.SERVER_PORT;
 const app = express()
 
 const corsOptions = {
-    origin: 'http://localhost:3000',
+    origin: process.env.DOMAIN,
     credentials: true,
     optionsSuccessStatus: 200
 };
@@ -29,6 +29,9 @@ async function seedDatabase() {
         await new SickLeaveSeed().seed();
         await new VacationSeed().seed();
         await new DayOffSeed().seed();
+        await new UserSeed().seed();
+        await new RoleSeed().seed();
+        await new UserRoleSeed().seed();
         console.log('Все таблицы успешно заполнены!');
     } catch (error) {
         console.error('Ошибка при заполнении базы данных:', error);

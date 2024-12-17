@@ -116,14 +116,14 @@ class VacationSeed {
 
             if (existingVacations.length === 0) {
                 await Vacation.bulkCreate(vacationData);
-                console.log("База данных отпусков успешно заполнена.");
+                console.log("Таблица отпусков успешно заполнена.");
             } else {
                 console.log(
-                    "База данных отпусков уже содержит записи. Новые записи не будут добавлены."
+                    "Таблица отпусков уже содержит записи. Новые записи не будут добавлены."
                 );
             }
         } catch (error) {
-            console.error("Ошибка при заполнении базы данных отпусков:", error);
+            console.error("Ошибка при заполнении таблицы отпусков:", error);
         }
     }
 }

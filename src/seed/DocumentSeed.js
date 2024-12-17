@@ -227,14 +227,14 @@ class DocumentSeed {
             const existingDocuments = await Document.findAll();
             if (existingDocuments.length === 0) {
                 await Document.bulkCreate(documentsData);
-                console.log("База данных документов успешно заполнена.");
+                console.log("Таблица документов успешно заполнена.");
             } else {
                 console.log(
-                    "База данных документов уже содержит записи. Новые записи не будут добавлены."
+                    "Таблица документов уже содержит записи. Новые записи не будут добавлены."
                 );
             }
         } catch (error) {
-            console.error("Ошибка при заполнении базы данных документов:", error);
+            console.error("Ошибка при заполнении таблицы документов:", error);
         }
     }
 }
