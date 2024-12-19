@@ -40,7 +40,7 @@ class authController {
             const hashPassword = bcrypt.hashSync(password, 7);
 
             const userRole = await Role.findOne({
-                where: { roleName: "РУКОВОДИТЕЛЬ" }
+                where: { roleName: "ИНСПЕКТОР" }
             })
 
             const newUser = await User.create({

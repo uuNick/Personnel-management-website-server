@@ -42,6 +42,16 @@ class VacationService {
         });
     }
 
+    async searchAllVacationsByEmployeeId(employee_id) {
+        return await Vacation.findAndCountAll({
+            where: {
+                employee_id: {
+                    [Op.eq]: employee_id
+                }
+            }
+        });
+    }
+
     async searchVacationsByDates(limit, offset, start_date, end_date) {
         return await Vacation.findAndCountAll({
             where: {

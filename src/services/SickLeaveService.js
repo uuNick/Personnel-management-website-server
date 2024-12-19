@@ -42,6 +42,16 @@ class SickLeaveService {
         });
     }
 
+    async searchAllSickLeavesByEmployeeId(employee_id) {
+        return await SickLeave.findAndCountAll({
+            where: {
+                employee_id: {
+                    [Op.eq]: employee_id
+                }
+            }
+        });
+    }
+
     async searchSickLeavesByDates(limit, offset, start_date, end_date) {
         return await SickLeave.findAndCountAll({
             where: {

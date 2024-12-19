@@ -92,6 +92,19 @@ class DayOffController {
         }
     }
 
+    async searchAllDaysOffByEmployeeId(req, res) {
+        const { employee_id } = req.query;
+        try {
+            const daysOff = await DayOffService.searchAllDaysOffByEmployeeId(employee_id);
+            return res.status(200).json(daysOff.rows);
+        } catch (error) {
+            console.error("Ошибка при поиске прогулов:", error);
+            return res
+                .status(500)
+                .json({ message: `Ошибка при поиске прогулов: ${error}` });
+        }
+    }
+
     async searchDaysOffByDates(req, res) {
         const { start_date, end_date, page = 1, limit = 10 } = req.query;
         const offset = (page - 1) * limit;

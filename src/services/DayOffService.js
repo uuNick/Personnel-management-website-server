@@ -42,6 +42,16 @@ class DayOffService {
         });
     }
 
+    async searchAllDaysOffByEmployeeId(employee_id) {
+        return await DayOff.findAndCountAll({
+            where: {
+                employee_id: {
+                    [Op.eq]: employee_id
+                }
+            }
+        });
+    }
+
     async searchDaysOffByDates(limit, offset, start_date, end_date) {
         return await DayOff.findAndCountAll({
             where: {

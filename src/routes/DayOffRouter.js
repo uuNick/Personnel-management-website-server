@@ -12,6 +12,8 @@ router.get("/search_by_dates", DayOffController.searchDaysOffByDates);
 
 router.get("/search_by_emp_id", DayOffController.searchDaysOffByEmployeeId);
 
+router.get("/search_all_by_emp_id", DayOffController.searchAllDaysOffByEmployeeId);
+
 router.get("/search_by_date_and_sort", DayOffController.searchByDateAndSortDaysOff);
 
 router.get("/:day_off_id", DayOffController.getDayOffById);

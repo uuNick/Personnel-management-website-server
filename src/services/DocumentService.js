@@ -1,4 +1,6 @@
 const Document = require('../models/Document');
+const fs = require('node:fs');
+const path = require('node:path');
 const { Op } = require('sequelize');
 
 class DocumentService {
@@ -85,7 +87,7 @@ class DocumentService {
     }
 
     async deleteDocument(document_id) {
-        const document = await DayOff.findByPk(document_id);
+        const document = await Document.findByPk(document_id);
         if (!document) {
             throw new Error("Документ с указанным ID не найден");
         }

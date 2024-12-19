@@ -61,6 +61,17 @@ const createTable = (data) => {
     });
 };
 
+const getCurrentDate = () => {
+    const currentDate = new Date();
+
+    const year = currentDate.getFullYear();
+    const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // Месяцы начинаются с 0
+    const day = String(currentDate.getDate()).padStart(2, '0');
+
+    const formattedDate = `${year}-${month}-${day}`;
+    return formattedDate;
+}
+
 class WordService {
     async generateWordDocument(data) {
         const doc = new Document({
@@ -70,6 +81,421 @@ class WordService {
             }],
         });
 
+        const buffer = await Packer.toBuffer(doc);
+        return buffer;
+    }
+
+    async generateDismissDocument(data) {
+        const spacingSymbols = "\t\t\t\t\t\t\t\t\t"
+
+        const doc = new Document({
+            sections: [{
+                properties: {},
+                children: [
+                    new Paragraph({
+                        children: [
+                            new TextRun({
+                                text: `${spacingSymbols}Директору`,
+                                size: 28,
+                            })
+                        ]
+                    }),
+                    new Paragraph({
+                        children: [
+                            new TextRun({
+                                text: `${spacingSymbols}ОАО «Зенит»`,
+                                size: 28,
+                            })
+                        ]
+                    }),
+                    new Paragraph({
+                        children: [
+                            new TextRun({
+                                text: `${spacingSymbols}Войтеховичу А. Н.`,
+                                size: 28,
+                            })
+                        ]
+                    }),
+                    new Paragraph({
+                        children: [
+                            new TextRun({
+                                text: `${spacingSymbols}от ${data.document_data || new Date()}`,
+                                size: 28,
+                            })
+                        ]
+                    }),
+                    new Paragraph({}),
+                    new Paragraph({
+                        children: [
+                            new TextRun({
+                                text: "\nЗаявление",
+                                bold: true,
+                                size: 32,
+                            })
+                        ],
+                        alignment: 'center'
+                    }),
+                    new Paragraph({}),
+                    new Paragraph({
+                        children: [
+                            new TextRun({
+                                text: `\nПрошу уволить меня с должности "${data.position}" по собственному желанию ${data.dismiss_date}`,
+                                size: 28,
+                            })
+                        ]
+                    }),
+                    new Paragraph({}),
+                    new Paragraph({
+                        children: [
+                            new TextRun({
+                                text: `${date}\t\t\t\t\t\t${date.fullname}`,
+                                size: 28,
+                            }),
+                            new TextRun({
+                                text: " ______________",
+                                size: 28,
+                            }),
+                        ]
+                    }),
+                ],
+            }],
+        });
+
+        const buffer = await Packer.toBuffer(doc);
+        return buffer;
+    }
+
+    async generateVacationDocument(data) {
+        const doc = new Document({
+            sections: [{
+                properties: {},
+                children: [
+                    new Paragraph({
+                        children: [
+                            new TextRun({
+                                text: `ПРИКАЗ О ПРЕДОСТАВЛЕНИИ ОТПУСКА`,
+                                size: 28,
+                                bold: true
+                            })
+                        ],
+                        alignment: 'center'
+                    }),
+                    new Paragraph({
+                        children: [
+                            new TextRun({
+                                text: "",
+                                size: 28,
+                            })
+                        ],
+                        alignment: 'center'
+                    }),
+                    new Paragraph({
+                        children: [
+                            new TextRun({
+                                text: "",
+                                size: 28,
+                            })
+                        ],
+                        alignment: 'center'
+                    }),
+                    new Paragraph({
+                        children: [
+                            new TextRun({
+                                text: `\t\t\tОАО «Зенит»\t\t\t`,
+                                size: 28,
+                                underline: {},
+                            })
+                        ],
+                        alignment: 'center'
+                    }),
+                    new Paragraph({
+                        children: [
+                            new TextRun({
+                                text: `наименование организации`,
+                                size: 20,
+                            })
+                        ],
+                        alignment: 'center'
+                    }),
+                    new Paragraph({
+                        children: [
+                            new TextRun({
+                                text: "",
+                                size: 32,
+                            })
+                        ],
+                        alignment: 'center'
+                    }),
+                    new Paragraph({
+                        children: [
+                            new TextRun({
+                                text: "",
+                                size: 32,
+                            })
+                        ],
+                        alignment: 'center'
+                    }),
+                    new Paragraph({
+                        children: [
+                            new TextRun({
+                                text: "ПРИКАЗ",
+                                size: 28,
+                            })
+                        ],
+                    }),
+                    new Paragraph({
+                        children: [
+                            new TextRun({
+                                text: "\t\t\t № \t\t",
+                                size: 28,
+                                underline: {}
+                            })
+                        ],
+                    }),
+                    new Paragraph({
+                        children: [
+                            new TextRun({
+                                text: "\t\t\t\t\t\t",
+                                size: 28,
+                                underline: {}
+                            })
+                        ],
+                    }),
+                    new Paragraph({
+                        children: [
+                            new TextRun({
+                                text: "место издания",
+                                size: 20,
+                            })
+                        ],
+                    }),
+                    new Paragraph({
+                        children: [
+                            new TextRun({
+                                text: "",
+                                size: 20,
+                            })
+                        ],
+                    }),
+                    new Paragraph({
+                        children: [
+                            new TextRun({
+                                text: "О предоставлении отпуска",
+                                size: 28,
+                                bold: true,
+                            })
+                        ],
+                    }),
+                    new Paragraph({
+                        children: [
+                            new TextRun({
+                                text: "",
+                                size: 20,
+                            })
+                        ],
+                    }),
+                    new Paragraph({
+                        children: [
+                            new TextRun({
+                                text: "ПРЕДОСТАВИТЬ",
+                                size: 28,
+                            })
+                        ],
+                    }),
+                    new Paragraph({
+                        children: [
+                            new TextRun({
+                                text: `\t\t\t\t${data.fullname}\t\t\t\t`,
+                                size: 28,
+                                underline: {},
+                            })
+                        ],
+                        alignment: 'center'
+                    }),
+                    new Paragraph({
+                        children: [
+                            new TextRun({
+                                text: "ФИО",
+                                size: 20,
+                            })
+                        ],
+                        alignment: 'center'
+                    }),
+                    new Paragraph({
+                        children: [
+                            new TextRun({
+                                text: `\t\t\t\t${data.position}\t\t\t\t`,
+                                size: 28,
+                                underline: {},
+                            })
+                        ],
+                        alignment: 'center'
+                    }),
+                    new Paragraph({
+                        children: [
+                            new TextRun({
+                                text: "должность",
+                                size: 20,
+                            })
+                        ],
+                        alignment: 'center'
+                    }),
+                    new Paragraph({
+                        children: [
+                            new TextRun({
+                                text: `\t\t\t\t${data.type}\t\t\t\t`,
+                                size: 28,
+                                underline: {},
+                            })
+                        ],
+                        alignment: 'center'
+                    }),
+                    new Paragraph({
+                        children: [
+                            new TextRun({
+                                text: "вид отпуска",
+                                size: 20,
+                            })
+                        ],
+                        alignment: 'center'
+                    }),
+                    new Paragraph({
+                        children: [
+                            new TextRun({
+                                text: `\t\t\t${data.amount}\t\t\t`,
+                                size: 28,
+                                underline: {},
+                            })
+                        ],
+                        alignment: 'center'
+                    }),
+                    new Paragraph({
+                        children: [
+                            new TextRun({
+                                text: "количество календарных дней",
+                                size: 20,
+                            })
+                        ],
+                        alignment: 'center'
+                    }),
+                    new Paragraph({
+                        children: [
+                            new TextRun({
+                                text: "c",
+                                size: 28,
+                            }),
+                            new TextRun({
+                                text: `\t\t${data.start_date}\t\t`,
+                                size: 28,
+                                underline: {}
+                            }),
+                            new TextRun({
+                                text: " по ",
+                                size: 28,
+                            }),
+                            new TextRun({
+                                text: `\t\t${data.end_date}\t\t`,
+                                size: 28,
+                                underline: {}
+                            }),
+                        ],
+                        alignment: 'center'
+                    }),
+                    new Paragraph({
+                        children: [
+                            new TextRun({
+                                text: "",
+                                size: 20,
+                            })
+                        ],
+                    }),
+                    new Paragraph({
+                        children: [
+                            new TextRun({
+                                text: "Директор ОАО \"Зенит\"",
+                                size: 28,
+                            }),
+                            new TextRun({
+                                text: "\t\t",
+                                size: 28,
+                            }),
+                            new TextRun({
+                                text: "\t\t",
+                                size: 28,
+                                underline: {}
+                            }),
+                            new TextRun({
+                                text: "\t",
+                                size: 28,
+                            }),
+                            new TextRun({
+                                text: "\tВойтехович А. Н.\t",
+                                size: 28,
+                            })
+                        ],
+                    }),
+                    new Paragraph({
+                        children: [
+                            new TextRun({
+                                text: "",
+                                size: 20,
+                            })
+                        ],
+                    }),
+                    new Paragraph({
+                        children: [
+                            new TextRun({
+                                text: "",
+                                size: 20,
+                            })
+                        ],
+                    }),
+                    new Paragraph({
+                        children: [
+                            new TextRun({
+                                text: "С приказом ознакомлен",
+                                size: 28,
+                            }),
+                            new TextRun({
+                                text: "\t\t",
+                                size: 28,
+                            }),
+                            new TextRun({
+                                text: "\t\t",
+                                size: 28,
+                                underline: {}
+                            }),
+                            new TextRun({
+                                text: "\t\t",
+                                size: 28,
+                            }),
+                            new TextRun({
+                                text: `${data.employeeName}`,
+                                size: 28,
+                            })
+                        ],
+                    }),
+                    new Paragraph({
+                        children: [
+                            new TextRun({
+                                text: "",
+                                size: 20,
+                            })
+                        ],
+                    }),
+                    new Paragraph({
+                        children: [
+                            new TextRun({
+                                text: `${getCurrentDate()}`,
+                                size: 28,
+                            })
+                        ],
+                        alignment: 'right',
+                    }),
+
+                ],
+            }],
+        });
         const buffer = await Packer.toBuffer(doc);
         return buffer;
     }

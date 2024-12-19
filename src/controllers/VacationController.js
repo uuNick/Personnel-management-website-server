@@ -92,6 +92,19 @@ class VacationController {
         }
     }
 
+    async searchAllVacationsByEmployeeId(req, res) {
+        const { employee_id } = req.query;
+        try {
+            const vacations = await VacationService.searchAllVacationsByEmployeeId(employee_id);
+            return res.status(200).json(vacations.rows);
+        } catch (error) {
+            console.error("Ошибка при поиске отпусков:", error);
+            return res
+                .status(500)
+                .json({ message: `Ошибка при поиске отпусков: ${error}` });
+        }
+    }
+
     async searchVacationsByDates(req, res) {
         const { start_date, end_date, page = 1, limit = 10 } = req.query;
         const offset = (page - 1) * limit;

@@ -92,6 +92,19 @@ class SickLeaveController {
         }
     }
 
+    async searchAllSickLeavesByEmployeeId(req, res) {
+        const { employee_id } = req.query;
+        try {
+            const sickLeaves = await SickLeaveService.searchAllSickLeavesByEmployeeId(employee_id);
+            return res.status(200).json(sickLeaves.rows);
+        } catch (error) {
+            console.error("Ошибка при поиске больничных листов:", error);
+            return res
+                .status(500)
+                .json({ message: `Ошибка при поиске больничных листов: ${error}` });
+        }
+    }
+
     async searchSickLeavesByDates(req, res) {
         const { start_date, end_date, page = 1, limit = 10 } = req.query;
         const offset = (page - 1) * limit;
