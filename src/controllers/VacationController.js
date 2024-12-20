@@ -163,7 +163,12 @@ class VacationController {
             await VacationService.deleteVacation(vacation_id);
             return res.status(204).send()
         } catch (error) {
-            return res.status(500).json({ message: error.message });
+            if(error.message.includes('не найден')){
+                res.status(404).json({ message: error.message })
+            }
+            else{
+                return res.status(500).json({ message: error.message });
+            }
         }
     }
 }

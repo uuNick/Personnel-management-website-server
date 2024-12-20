@@ -72,7 +72,7 @@ class authController {
             const validPassword = bcrypt.compareSync(password, user.password);
 
             if (!validPassword) {
-                return res.status(403).json({ message: `Введен неверный пароль` });
+                return res.status(401).json({ message: `Введен неверный пароль` });
             }
 
             const userWithRoles = await User.findOne({
@@ -153,7 +153,7 @@ class authController {
         try {
             const decoded = jwt.verify(token, process.env.SECRET_KEY);
             if (!decoded || !decoded.id) {
-                return res.status(404).json({ error: 'Неверный или просроченный токен' });
+                return res.status(401).json({ error: 'Неверный или просроченный токен' });
             }
 
             const user_id = decoded.id;
