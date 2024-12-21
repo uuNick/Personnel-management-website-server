@@ -3,6 +3,17 @@ const { PassThrough } = require("stream");
 const { promisify } = require("util");
 const path = require("path");
 
+const getCurrentDate = () => {
+    const currentDate = new Date();
+
+    const year = currentDate.getFullYear();
+    const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // Месяцы начинаются с 0
+    const day = String(currentDate.getDate()).padStart(2, '0');
+
+    const formattedDate = `${year}-${month}-${day}`;
+    return formattedDate;
+}
+
 class PDFService {
     constructor() {
         this.columnMapping = {
@@ -17,9 +28,7 @@ class PDFService {
         };
     }
 
-    async generatePDF(data) {
-
-        console.log(data)
+    async generatePDF(data, name) {
 
         const uniqueKeys = [...new Set(data.flatMap(item => Object.keys(item)))];
         const columnHeaders = uniqueKeys.map(key => this.columnMapping[key] || key);
@@ -38,6 +47,9 @@ class PDFService {
 
         doc.font(path.join(__dirname, 'Roboto/Roboto-Regular.ttf'));
         doc.font(path.join(__dirname, 'Roboto/Roboto-Bold.ttf'));
+
+        doc.fontSize(20).font('Roboto-Bold').text(`Отчёт от ${getCurrentDate()}\n\n${name}`, { align: 'center' });
+        doc.moveDown(); 
 
         const rows = data.map(item => {
             return uniqueKeys.map(key => item[key] || '');

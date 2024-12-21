@@ -9,7 +9,9 @@ const getColumnTitles = (data) => {
     } else if ('type' in lastItem) {
         return ['ФИО', 'ID Документа', 'Начало', 'Конец', 'Тип'];
     } else if ('reason' in lastItem) {
-        return ['ФИО', 'Начало', 'Конец', 'Причина']; // Здесь нет document_id
+        return ['ФИО', 'Начало', 'Конец', 'Причина'];
+    } else if ('type_of_change' in lastItem) {
+        return ['ФИО', 'ID пользователя', 'Дата изменения', 'Тип изменения'];
     }
 
     return [];
@@ -31,15 +33,23 @@ const createTable = (data) => {
             new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: item.fullname, size: 28 })], alignment: 'center' })] }),
         ];
 
-        // Добавляем document_id если он есть в структуре
         if ('document_id' in item) {
             cells.push(new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: item.document_id.toString(), size: 28 })], alignment: 'center' })] }));
         }
 
-        cells.push(
-            new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: item.start_date, size: 28 })], alignment: 'center' })] }),
-            new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: item.end_date, size: 28 })], alignment: 'center' })] })
-        );
+        if ('start_date' in item) {
+            cells.push(
+                new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: item.start_date, size: 28 })], alignment: 'center' })] }),
+                new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: item.end_date, size: 28 })], alignment: 'center' })] })
+            );
+        }
+
+        if ('date_of_change' in item){
+            cells.push(
+                new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: item.user_id.toString(), size: 28 })], alignment: 'center' })] }),
+                new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: item.date_of_change, size: 28 })], alignment: 'center' })] })
+            );
+        }
 
         // Добавляем соответствующее поле в зависимости от структуры
         if ('diagnosis' in item) {
@@ -48,6 +58,8 @@ const createTable = (data) => {
             cells.push(new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: item.type, size: 28 })], alignment: 'center' })] }));
         } else if ('reason' in item) {
             cells.push(new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: item.reason, size: 28 })], alignment: 'center' })] }));
+        } else if ('type_of_change' in item) {
+            cells.push(new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: item.type_of_change, size: 28 })], alignment: 'center' })] }));
         }
 
         return new TableRow({
@@ -73,11 +85,15 @@ const getCurrentDate = () => {
 }
 
 class WordService {
-    async generateWordDocument(data) {
+    async generateWordDocument(data, name) {
         const doc = new Document({
             sections: [{
                 properties: {},
-                children: [createTable(data)],
+                children: [new Paragraph({ children: [new TextRun({ text: `Отчет от ${getCurrentDate()}`, size: 40, bold: true })], alignment: 'center' }),
+                new Paragraph({}),
+                new Paragraph({ children: [new TextRun({ text: `${name}`, size: 40, bold: true })], alignment: 'center' }),
+                new Paragraph({}),
+                createTable(data)],
             }],
         });
 

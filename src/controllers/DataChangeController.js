@@ -74,10 +74,10 @@ class DataChangeController {
     }
 
     async searchDataChangesByDate(req, res) {
-        const { date_of_change, page = 1, limit = 10 } = req.query;
+        const { start_date, end_date, page = 1, limit = 10 } = req.query;
         const offset = (page - 1) * limit;
         try {
-            const dataChanges = await DataChangeService.searchDataChangesByDate(limit, offset, date_of_change);
+            const dataChanges = await DataChangeService.searchDataChangesByDate(limit, offset, start_date, end_date);
             return res.status(200).json({
                 total: dataChanges.count,
                 pages: Math.ceil(dataChanges.count / limit),
@@ -92,11 +92,11 @@ class DataChangeController {
     }
 
     async searchByDateAndSortDataChanges(req, res) {
-        const { date_of_change, sortBy = 'date_of_change', order = "ASC", page = 1, limit = 10 } = req.query;
+        const { start_date, end_date, sortBy = 'date_of_change', order = "ASC", page = 1, limit = 10 } = req.query;
         const offset = (page - 1) * limit;
 
         try {
-            const dataChanges = await DataChangeService.searchByDateAndSortDataChanges(limit, offset, date_of_change, sortBy, order);
+            const dataChanges = await DataChangeService.searchByDateAndSortDataChanges(limit, offset, start_date, end_date, sortBy, order);
             return res.status(200).json({
                 total: dataChanges.count,
                 pages: Math.ceil(dataChanges.count / limit),

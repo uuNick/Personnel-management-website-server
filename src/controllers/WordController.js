@@ -2,8 +2,8 @@ const WordService = require('../services/WordService');
 class WordController {
     async exportToWord(req, res) {
         try {
-            const data = req.body || [];
-            const docBuffer = await WordService.generateWordDocument(data);
+            const {data, name} = req.body || [];
+            const docBuffer = await WordService.generateWordDocument(data, name);
             res.set({
                 'Content-Disposition': 'attachment; filename="document.docx"',
                 'Content-Type': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',

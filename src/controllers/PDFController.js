@@ -4,9 +4,9 @@ class PDFController {
     async generateReport(req, res) {
         try {
 
-            const data = req.body || [];
+            const {data, name} = req.body || [];
 
-            const pdfBuffer = await PDFService.generatePDF(data);
+            const pdfBuffer = await PDFService.generatePDF(data, name);
         
             res.setHeader('Content-Type', 'application/pdf');
             res.setHeader('Content-Disposition', 'attachment; filename="report.pdf"');

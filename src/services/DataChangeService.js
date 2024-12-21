@@ -1,4 +1,6 @@
 const DataChange = require("../models/DataChange");
+const { Op } = require('sequelize');
+
 
 class DataChangeService {
 
@@ -29,20 +31,24 @@ class DataChangeService {
         });
     }
 
-    async searchDataChangesByDate(limit, offset, date_of_change) {
+    async searchDataChangesByDate(limit, offset, start_date, end_date) {
         return await DataChange.findAndCountAll({
             where: {
-                date_of_change: date_of_change
+                date_of_change: {
+                    [Op.between]: [start_date, end_date]
+                },
             },
             offset: offset,
             limit: limit,
         })
     }
 
-    async searchByDateAndSortDataChanges(limit, offset, date_of_change, sortBy, order) {
+    async searchByDateAndSortDataChanges(limit, offset, start_date, end_date, sortBy, order) {
         return await DataChange.findAndCountAll({
             where: {
-                date_of_change: date_of_change
+                date_of_change: {
+                    [Op.between]: [start_date, end_date]
+                },
             },
             order: [[sortBy, order]],
             offset: offset,

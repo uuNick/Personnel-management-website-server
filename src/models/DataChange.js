@@ -34,6 +34,8 @@ const DataChange = sequelize.define('DataChange', {
         type: DataTypes.STRING(255),
         allowNull: false,
     }
+}, {
+    timestamps: false,
 });
 
 
