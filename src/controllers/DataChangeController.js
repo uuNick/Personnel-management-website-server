@@ -35,13 +35,88 @@ class DataChangeController {
         }
     }
 
-    async deleteDataChange(req, res){
-        const {data_change_id} = req.params;
-        try{
+    async getAllDataChangesWithPag(req, res) {
+        const { page = 1, limit = 10 } = req.query;
+        const offset = (page - 1) * limit;
+
+        try {
+            const dataChanges = await DataChangeService.getAllDataChangesWithPag(limit, offset);
+
+            return res.status(200).json({
+                total: dataChanges.count,
+                pages: Math.ceil(dataChanges.count / limit),
+                data: dataChanges.rows,
+            });
+
+        } catch (error) {
+            return res.status(500).json({ message: `Ошибка при получении изменений: ${error.message}`, });
+        }
+    }
+
+    async getSortedDataChanges(req, res) {
+        const {
+            sortBy = "date_of_change", order = "ASC",
+            page = 1, limit = 10
+        } = req.query;
+        const offset = (page - 1) * limit;
+
+        try {
+            const sortedDataChanges = await DataChangeService.getSortedDataChanges(limit, offset, sortBy, order);
+            return res.status(200).json({
+                total: sortedDataChanges.count,
+                pages: Math.ceil(sortedDataChanges.count / limit),
+                data: sortedDataChanges.rows,
+            });
+
+        } catch (error) {
+            return res.status(500).json({ message: `Ошибка при получении изменений: ${error.message}`, });
+        }
+    }
+
+    async searchDataChangesByDate(req, res) {
+        const { date_of_change, page = 1, limit = 10 } = req.query;
+        const offset = (page - 1) * limit;
+        try {
+            const dataChanges = await DataChangeService.searchDataChangesByDate(limit, offset, date_of_change);
+            return res.status(200).json({
+                total: dataChanges.count,
+                pages: Math.ceil(dataChanges.count / limit),
+                data: dataChanges.rows,
+            });
+        } catch (error) {
+            console.error("Ошибка при поиске изменений:", error);
+            return res
+                .status(500)
+                .json({ message: `Ошибка при поиске изменений: ${error}` });
+        }
+    }
+
+    async searchByDateAndSortDataChanges(req, res) {
+        const { date_of_change, sortBy = 'date_of_change', order = "ASC", page = 1, limit = 10 } = req.query;
+        const offset = (page - 1) * limit;
+
+        try {
+            const dataChanges = await DataChangeService.searchByDateAndSortDataChanges(limit, offset, date_of_change, sortBy, order);
+            return res.status(200).json({
+                total: dataChanges.count,
+                pages: Math.ceil(dataChanges.count / limit),
+                data: dataChanges.rows,
+            });
+        } catch (error) {
+            console.error("Ошибка при поиске и сортировке изменений:", error);
+            return res
+                .status(500)
+                .json({ message: `Ошибка при поиске и сортировке изменений: ${error}` });
+        }
+    }
+
+    async deleteDataChange(req, res) {
+        const { data_change_id } = req.params;
+        try {
             await DataChangeService.deleteDataChange(data_change_id);
-            return res.status(204).send() 
-        }catch(error){
-            return res.status(500).json({message: error.message});
+            return res.status(204).send()
+        } catch (error) {
+            return res.status(500).json({ message: error.message });
         }
     }
 }

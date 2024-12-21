@@ -119,7 +119,7 @@ class authController {
 
             const id = user.id
 
-            const token = jwt.sign({ id }, secret, { expiresIn: '1h' });
+            const token = jwt.sign({ id }, process.env.SECRET_KEY, { expiresIn: '1h' });
             const resetPasswordLink = `${process.env.DOMAIN}/resetPassword?token=${token}`;
 
             const transporter = nodemailer.createTransport({

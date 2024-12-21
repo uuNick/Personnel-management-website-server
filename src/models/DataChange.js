@@ -26,7 +26,7 @@ const DataChange = sequelize.define('DataChange', {
             key: 'id'
         }
     },
-    data_of_change: {
+    date_of_change: {
         type: DataTypes.DATEONLY,
         allowNull: false,
     },
