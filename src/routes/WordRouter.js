@@ -4,7 +4,7 @@ const WordController = require('../controllers/WordController');
 
 router.post('/generate', WordController.exportToWord);
 
-router.post('generate_dismissal', WordController.exportToWordDismiss);
+router.post('/generate_dismissal', WordController.exportToWordDismissal);
 
 router.post('/generate_vacation', WordController.exportToWordVacation);
 

@@ -135,7 +135,7 @@ class WordService {
                     new Paragraph({
                         children: [
                             new TextRun({
-                                text: `${spacingSymbols}от ${data.document_data || new Date()}`,
+                                text: `${spacingSymbols}от ${data.document_date || getCurrentDate()}`,
                                 size: 28,
                             })
                         ]
@@ -155,7 +155,7 @@ class WordService {
                     new Paragraph({
                         children: [
                             new TextRun({
-                                text: `\nПрошу уволить меня с должности "${data.position}" по собственному желанию ${data.dismiss_date}`,
+                                text: `\tПрошу уволить меня с должности "${data.position}" по собственному желанию ${data.dismiss_date}`,
                                 size: 28,
                             })
                         ]
@@ -164,7 +164,7 @@ class WordService {
                     new Paragraph({
                         children: [
                             new TextRun({
-                                text: `${date}\t\t\t\t\t\t${date.fullname}`,
+                                text: `${data.document_date || getCurrentDate()}\t\t\t\t${data.fullname}`,
                                 size: 28,
                             }),
                             new TextRun({
@@ -445,7 +445,7 @@ class WordService {
                                 size: 28,
                             }),
                             new TextRun({
-                                text: "\tВойтехович А. Н.\t",
+                                text: "Войтехович А. Н.\t",
                                 size: 28,
                             })
                         ],
@@ -473,7 +473,7 @@ class WordService {
                                 size: 28,
                             }),
                             new TextRun({
-                                text: "\t\t",
+                                text: "\t",
                                 size: 28,
                             }),
                             new TextRun({
@@ -482,11 +482,11 @@ class WordService {
                                 underline: {}
                             }),
                             new TextRun({
-                                text: "\t\t",
+                                text: "\t",
                                 size: 28,
                             }),
                             new TextRun({
-                                text: `${data.employeeName}`,
+                                text: `${data.fullname}`,
                                 size: 28,
                             })
                         ],
